@@ -10,12 +10,11 @@ package ru.job4j;
 class Calculate {
 	/**
 	* Конструктор, вывод строки в консоль.
-	* @param arg - args.
+	* @param args - args.
 	*/
 	public static void main(String[] args) {
 		System.out.print("Hello world.");
 	}
-	
 	/**
 	* Method echo.
 	* @param name Your name.
