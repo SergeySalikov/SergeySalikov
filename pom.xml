@@ -56,16 +56,13 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupID>org.apache.maven.plugins</groupID>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
                     <compilerVersion>1.8</compilerVersion>
                 </configuration>
-            </plugin>>
-
-        </plugins>
-
-    </build>
-
+            </plugin>
+		</plugins>
+	</build>
 </project>
