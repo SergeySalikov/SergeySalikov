@@ -10,6 +10,11 @@ public class Item {
     public Item() {
     }
 
+    public Item(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+    }
+
     public Item(String name, String desc, long created) {
         this.name = name;
         this.desc = desc;
@@ -26,5 +31,9 @@ public class Item {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDesc() {
+        return this.desc;
     }
 }

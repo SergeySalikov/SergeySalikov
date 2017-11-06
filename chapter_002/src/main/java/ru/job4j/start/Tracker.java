@@ -39,16 +39,13 @@ public class Tracker {
     }
 
     /**
-     * @param itemDelete - удаляемая заявка.
+     * @param id - id удаляемой заявки.
      */
-    public void delete(Item itemDelete) {
+    public void delete(String id) {
         int bound = nElems;
-        for (int out = 0; out <= bound; out++) {
-            if (itemDelete.getId().equals(items[out].getId())) {
-                items[out] = null;
-                for (int in = out; in < bound; in++) {
-                    items[in] = items[in + 1];
-                }
+        for (int i = 0; i < bound; i++) {
+            if (id.equals(items[i].getId())) {
+                items[i] = items[bound - 1];
                 nElems--;
                 break;
             }
@@ -59,9 +56,13 @@ public class Tracker {
      * @return - возвращает копию массива this.items без null элементов.
      */
     public Item[] findAll() {
-        Item[] result = Arrays.copyOf(items, nElems + 1);
+        Item[] result = new Item[nElems];
+        for (int i = 0; i != nElems; i++) {
+            result[i] = this.items[i];
+        }
         return result;
     }
+
 
     /**
      * @param key - строка для поиска в поле Item.name.

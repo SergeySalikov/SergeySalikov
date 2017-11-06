@@ -49,11 +49,15 @@ public class TrackerTest {
     @Test
     public void whenDeleteItemThenItemsWithoutDeleteItem() {
         Tracker tracker = new Tracker();
-        Item item = new Item("test1", "testDescription", 123L);
-        tracker.add(item);
-        tracker.delete(item);
-        Item expected = null;
-        assertThat(tracker.findAll()[0], is(expected));
+        Item item1 = new Item("test1", "testDescription1", 123L);
+        Item item2 = new Item("test2", "testDescription2", 223L);
+        tracker.add(item1);
+        tracker.add(item2);
+        item1.setId("11");
+        tracker.delete("11");
+        boolean expected = true;
+        boolean result = tracker.findAll()[0].getId().equals(item2.getId());
+        assertThat(result, is(expected));
 
     }
 
@@ -68,7 +72,7 @@ public class TrackerTest {
         tracker.add(item);
         tracker.add(item2);
         Item[] itemArray = tracker.findAll();
-        int result = itemArray.length - 1;
+        int result = itemArray.length;
         int expected = 2;
         assertThat(result, is(expected));
 
