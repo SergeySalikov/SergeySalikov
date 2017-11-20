@@ -13,10 +13,15 @@ public class MenuTracker {
     private Input input;
     private Tracker tracker;
     private UserAction[] actions = new UserAction[6];
+    private int[] range = {1, 2, 3, 4, 5, 6};
 
     MenuTracker(Input input, Tracker tracker) {
         this.tracker = tracker;
         this.input = input;
+    }
+
+    public int[] getRange() {
+        return this.range;
     }
 
     public void fillActions() {

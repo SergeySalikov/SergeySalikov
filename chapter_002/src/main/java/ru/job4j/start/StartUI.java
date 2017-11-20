@@ -1,6 +1,5 @@
 package ru.job4j.start;
 
-import ru.job4j.models.*;
 
 /**
  * class StartUI.
@@ -29,8 +28,7 @@ class StartUI {
         menu.fillActions();
         do {
             menu.show();
-            int key = Integer.valueOf(input.ask("select: "));
-            menu.select(key);
+            menu.select(input.ask("select: ", menu.getRange()));
         }
         while (!"y".equals(this.input.ask("EXIT?(y): ")));
 
@@ -44,7 +42,7 @@ class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        ConsoleInput input = new ConsoleInput();
+        Input input = new ValidateInput();
         StartUI start = new StartUI(input);
         start.init();
 
