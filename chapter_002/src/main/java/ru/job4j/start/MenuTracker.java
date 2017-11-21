@@ -25,12 +25,12 @@ public class MenuTracker {
     }
 
     public void fillActions() {
-        this.actions[0] = new AddItem();
-        this.actions[1] = new ShowAll();
-        this.actions[2] = new Edit();
-        this.actions[3] = new Delete();
-        this.actions[4] = new MenuTracker.FindById(); // new MenuTracker.FindById();
-        this.actions[5] = new FindByName();
+        this.actions[0] = new AddItem("Add new Item", 1);
+        this.actions[1] = new ShowAll("Show all items", 2);
+        this.actions[2] = new Edit("Edit item", 3);
+        this.actions[3] = new Delete("Delete item", 4);
+        this.actions[4] = new MenuTracker.FindById("Find item by Id", 5);
+        this.actions[5] = new FindByName("Find items by name", 6);
     }
 
     public void show() {
@@ -48,9 +48,13 @@ public class MenuTracker {
     /**
      * Внутренний класс AddItem.
      */
-    private class AddItem implements UserAction {
+    private class AddItem extends BaseAction {
+        AddItem(String name, int key) {
+            super(name, key);
+        }
+
         public int key() {
-            return 1;
+            return key;
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -59,18 +63,18 @@ public class MenuTracker {
             Item item = new Item(name, desc);
             tracker.add(item);
         }
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add new Item");
-        }
     }
 
     /**
      * Внутренний класс ShowAll.
      */
-    private class ShowAll implements UserAction {
+    private class ShowAll extends BaseAction {
+        ShowAll(String name, int key) {
+            super(name, key);
+        }
+
         public int key() {
-            return 2;
+            return key;
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -78,15 +82,16 @@ public class MenuTracker {
                 System.out.println(String.format("%s. %s. %s", item.getName(), item.getDesc(), item.getId()));
             }
         }
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items");
-        }
     }
 
-    private class Edit implements UserAction {
+
+    private class Edit extends BaseAction {
+        Edit(String name, int key) {
+            super(name, key);
+        }
+
         public int key() {
-            return 3;
+            return key;
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -97,38 +102,36 @@ public class MenuTracker {
             item.setId(id);
             tracker.update(item);
         }
-
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Edit item");
-        }
     }
 
     /**
      * Внутренний класс Delete.
      */
-    private class Delete implements UserAction {
+    private class Delete extends BaseAction {
+        Delete(String name, int key) {
+            super(name, key);
+        }
+
         public int key() {
-            return 4;
+            return key;
         }
 
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Enter id: ");
             tracker.delete(id);
         }
-
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete item");
-        }
     }
 
     /**
      * статический класс FindById.
      */
-    private static class FindById implements UserAction {
+    private static class FindById extends BaseAction {
+        FindById(String name, int key) {
+            super(name, key);
+        }
+
         public int key() {
-            return 5;
+            return key;
         }
 
         public void execute(Input input, Tracker tracker) {
@@ -136,20 +139,19 @@ public class MenuTracker {
             Item item = tracker.findById(id);
             System.out.println(item.getName() + " " + item.getDesc());
         }
-
-
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find item by Id");
-        }
     }
 }
 
 /**
  * Внешний класс FindByName.
  */
-class FindByName implements UserAction {
+class FindByName extends BaseAction {
+    FindByName(String name, int key) {
+        super(name, key);
+    }
+
     public int key() {
-        return 6;
+        return key;
     }
 
     public void execute(Input input, Tracker tracker) {
@@ -157,11 +159,6 @@ class FindByName implements UserAction {
         for (Item item : tracker.findByName(name)) {
             System.out.println(String.format("%s. %s. %s", item.getName(), item.getDesc(), item.getId()));
         }
-    }
-
-
-    public String info() {
-        return String.format("%s. %s", this.key(), "Find items by name");
     }
 }
 
