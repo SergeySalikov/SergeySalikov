@@ -14,10 +14,13 @@ public class Board {
 
     boolean move(Cell source, Cell dest) throws ImpossibleMoveException, FigureNotFoundException {
         boolean result = true;
-        if (figures[source.getX()][source.getY()] == null) throw new FigureNotFoundException("Клетка пуста", source);
-
+        if (figures[source.getX()][source.getY()] == null) {
+            throw new FigureNotFoundException("Клетка пуста", source);
+        }
         for (Cell cell : figures[source.getX()][source.getY()].way(source, dest)) {
-            if (figures[cell.getX()][cell.getY()] != null) throw new OccupiedWayException("На пути преграда", cell);
+            if (figures[cell.getX()][cell.getY()] != null) {
+                throw new OccupiedWayException("На пути преграда", cell);
+            }
         }
         return result;
     }

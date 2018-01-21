@@ -12,6 +12,7 @@ import java.util.Arrays;
 class ArrayDuplicate {
     /**
      * Method remove.
+     *
      * @param array - массив строк.
      * @return возвращает массив строк без дубликатов.
      */
