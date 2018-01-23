@@ -51,4 +51,18 @@ class ConvertList {
         }
         return array;
     }
+
+    /**
+     * @param list - лист массивов
+     * @return лист целых чисел из list.
+     */
+    public List<Integer> convert(List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] array : list) {
+            for (int value : array) {
+                result.add(value);
+            }
+        }
+        return result;
+    }
 }

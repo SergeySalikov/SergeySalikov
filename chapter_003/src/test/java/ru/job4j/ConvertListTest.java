@@ -49,4 +49,23 @@ public class ConvertListTest {
         assertThat(result, is(expected));
     }
 
+    /**
+     * Test convert.
+     */
+    @Test
+    public void whenListWithArraysThenList() {
+        ConvertList conv = new ConvertList();
+        List<int[]> listArray = new ArrayList<>();
+        int[] array1 = {1, 2, 3, 4};
+        int[] array2 = {5, 6};
+        int[] array3 = {7, 8, 9};
+        listArray.add(array1);
+        listArray.add(array2);
+        listArray.add(array3);
+        List<Integer> list = conv.convert(listArray);
+        String result = "[1, 2, 3, 4, 5, 6, 7, 8, 9]";
+        String expected = list.toString();
+        assertThat(result, is(expected));
+    }
+
 }
