@@ -23,7 +23,7 @@ public class StubInputTest {
 
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Input input = new StubInput(new String[]{"0", "test name", "desc", "1", "6"});
+        Input input = new StubInput(new String[]{"1", "test name", "desc", "y"});
         StartUI start = new StartUI(input);
         start.init();
         assertThat(tracker.findAll()[0].getName(), is("test name"));
@@ -37,7 +37,7 @@ public class StubInputTest {
     public void whenUpdateThenTrackerHasUpdatedValue() {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item());
-        Input input = new StubInput(new String[]{"2", "test name", "desc", item.getId(), "6"});
+        Input input = new StubInput(new String[]{"3", "test name", "desc", item.getId(), "y"});
         new StartUI(input, tracker).init();
         assertThat(tracker.findById(item.getId()).getName(), is("test name"));
     }
@@ -52,7 +52,7 @@ public class StubInputTest {
         Item item2 = new Item("item2", "desk2");
         tracker.add(item1);
         tracker.add(item2);
-        Input input = new StubInput(new String[]{"1", "6"});
+        Input input = new StubInput(new String[]{"2", "y"});
         new StartUI(input, tracker).init();
         Item[] result = tracker.findAll();
         Item[] expected = new Item[]{item1, item2};
@@ -67,7 +67,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Item item = new Item("item1", "desk1");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"4", item.getId(), "6"});
+        Input input = new StubInput(new String[]{"5", item.getId(), "y"});
         new StartUI(input, tracker).init();
         Item result = tracker.findById(item.getId());
         Item expected = item;
@@ -82,7 +82,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Item item = new Item("item1", "desk1");
         tracker.add(item);
-        Input input = new StubInput(new String[]{"5", item.getName(), "6"});
+        Input input = new StubInput(new String[]{"6", item.getName(), "y"});
         new StartUI(input, tracker).init();
         String result = tracker.findByName("item1")[0].getDesc();
         String expected = "desk1";

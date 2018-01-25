@@ -12,8 +12,7 @@ import java.util.*;
  */
 public class Tracker {
 
-    private Item[] items = new Item[100];
-    int nElems = 0;
+    private List<Item> items = new ArrayList<>();
     private static final Random RN = new Random();
 
     /**
@@ -22,7 +21,7 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generatedId());
-        items[nElems++] = item;
+        items.add(item);
         return item;
     }
 
@@ -30,9 +29,9 @@ public class Tracker {
      * @param itemUpdate - заявка заменяющая другую по id.
      */
     public void update(Item itemUpdate) {
-        for (int i = 0; i <= nElems; i++) {
-            if (items[i].getId().equals(itemUpdate.getId())) {
-                items[i] = itemUpdate;
+        for (Item item : items) {
+            if (itemUpdate.getId().equals(item.getId())) {
+                Collections.replaceAll(items, item, itemUpdate);
                 break;
             }
         }
@@ -42,11 +41,9 @@ public class Tracker {
      * @param id - id удаляемой заявки.
      */
     public void delete(String id) {
-        int bound = nElems;
-        for (int i = 0; i < bound; i++) {
-            if (id.equals(items[i].getId())) {
-                items[i] = items[bound - 1];
-                nElems--;
+        for (Item item : items) {
+            if (id.equals(item.getId())) {
+                items.remove(item);
                 break;
             }
         }
@@ -56,10 +53,8 @@ public class Tracker {
      * @return - возвращает копию массива this.items без null элементов.
      */
     public Item[] findAll() {
-        Item[] result = new Item[nElems];
-        for (int i = 0; i != nElems; i++) {
-            result[i] = this.items[i];
-        }
+        Item[] result = new Item[items.size()];
+        items.toArray(result);
         return result;
     }
 
@@ -69,15 +64,14 @@ public class Tracker {
      * @return - массив Item с совпадением поля Item.name и key.
      */
     public Item[] findByName(String key) {
-        int count = 0;
-        Item[] result = new Item[nElems];
-        int bound = nElems;
-        for (int out = 0; out < bound; out++) {
-            if (items[out].getName().equals(key)) {
-                result[count++] = items[out];
+        List<Item> temp = new ArrayList<>();
+        for (Item item : items) {
+            if (key.equals(item.getName())) {
+                temp.add(item);
             }
         }
-        result = Arrays.copyOf(result, count);
+        Item[] result = new Item[temp.size()];
+        temp.toArray(result);
         return result;
     }
 
@@ -88,7 +82,7 @@ public class Tracker {
     public Item findById(String id) {
         Item result = null;
         for (Item item : items) {
-            if (item != null && item.getId().equals(id)) {
+            if (id.equals(item.getId())) {
                 result = item;
                 break;
             }
@@ -108,13 +102,7 @@ public class Tracker {
      * @return возвращает индекс в массиве items или -1 если нет такого объекта в данном масиве.
      */
     public int findIndex(Item item) {
-        int index = -1;
-        for (int i = 0; i <= nElems; i++) {
-            if (items[i].equals(item)) {
-                index = i;
-                break;
-            }
-        }
+        int index = items.indexOf(item);
         return index;
     }
 }
