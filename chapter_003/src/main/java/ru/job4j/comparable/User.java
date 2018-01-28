@@ -10,6 +10,14 @@ public class User implements Comparable<User> {
     String name;
     int age;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
     User(String name, int age) {
         this.name = name;
         this.age = age;
