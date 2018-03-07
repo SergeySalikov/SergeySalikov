@@ -25,6 +25,7 @@ public class AccountBase {
         for (User key : base.keySet()) {
             if (key.getPassport().equals(passport)) {
                 base.get(key).add(account);
+                break;
             }
         }
     }
@@ -34,20 +35,57 @@ public class AccountBase {
             if (key.getPassport().equals(passport)) {
                 int index = base.get(key).indexOf(account);
                 base.get(key).remove(index);
+                break;
             }
         }
 
     }
 
     public List<Account> getUserAccounts(String passport) {
-        List<Account> result = new ArrayList<>();
+        ArrayList<Account> result = new ArrayList<>();
         for (User key : base.keySet()) {
             if (key.getPassport().equals(passport)) {
-                System.out.println(base.get(key));
+                result.addAll(base.get(key));
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public boolean transferMoney(String srcPassport, String srcRequisite, String dstPassport, String dstRequisite, double amount) {
+        boolean result = false;
+        double valueDst = -amount;
+        double valueSrc = this.getValue(srcPassport, srcRequisite);
+        if (valueSrc >= amount) {
+            result = this.addValue(dstPassport, dstRequisite, amount);
+            this.addValue(srcPassport, srcRequisite, valueDst);
+        }
+        return result;
+    }
+    private double getValue(String srcPassport, String srcRequisite) {
+        double result = -1;
+        List<Account> userAccount = this.getUserAccounts(srcPassport);
+        for (Account account : userAccount) {
+            if (account.getRequisites() == Integer.parseInt(srcRequisite)) {
+                result = account.getValue();
+                break;
+            }
+        }
+        return result;
+    }
+
+    private boolean addValue(String dstPassport, String dstRequisite, double amount) {
+        boolean result = false;
+        List<Account> userAccount = this.getUserAccounts(dstPassport);
+        for (Account account : userAccount) {
+            if (account.getRequisites() == Integer.parseInt(dstRequisite)) {
+                account.setValue(amount);
+                result = true;
+                break;
             }
         }
 
         return result;
     }
 }
-

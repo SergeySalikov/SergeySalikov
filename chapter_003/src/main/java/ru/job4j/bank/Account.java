@@ -20,6 +20,10 @@ public class Account {
         return requisites;
     }
 
+    public void setValue(double value) {
+        this.value += value;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
