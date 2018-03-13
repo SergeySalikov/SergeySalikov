@@ -13,22 +13,16 @@ public class EvenNumbersIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        boolean result = false;
-        int indexEven = this.searchEvenNumber(array, index);
-        if (indexEven != -1) {
-            result = true;
-        }
-        return result;
+        return searchEvenNumber(array, index) != -1;
     }
 
     @Override
     public Object next()  {
-        int indexEven = this.searchEvenNumber(array, index);
-        index = indexEven + 1;
-        if (indexEven == -1) {
+        index = this.searchEvenNumber(array, index);
+        if (index == -1) {
             throw new NoSuchElementException();
         }
-        return array[indexEven];
+        return array[index++];
     }
 
     private int searchEvenNumber(int[] arr, int index) {
