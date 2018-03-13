@@ -13,27 +13,22 @@ public class PrimeIterator implements Iterator {
 
     @Override
     public boolean hasNext() {
-        boolean result = false;
-        if (this.searchPrime(array, index) != -1) {
-            result = true;
-        }
-        return result;
+        return searchPrime(array, index) != -1;
     }
 
     @Override
     public Object next() {
-        int indexPrime = this.searchPrime(array, index);
-        index = indexPrime + 1;
-        if (indexPrime == -1) {
+         index = this.searchPrime(array, index);
+        if (index == -1) {
             throw new NoSuchElementException();
         }
-        return array[indexPrime];
+        return array[index++];
     }
 
     private int searchPrime(int[] array, int index) {
         int result = -1;
         for (int out = index; out < array.length; out++) {
-            if (this.prime(array[out])) {
+            if (this.isPrime(array[out])) {
                 result = out;
                 break;
             }
@@ -41,7 +36,7 @@ public class PrimeIterator implements Iterator {
         return result;
     }
 
-    public boolean prime(int value) {
+    public boolean isPrime(int value) {
         boolean result = true;
         if (value == 1) {
             result = false;
