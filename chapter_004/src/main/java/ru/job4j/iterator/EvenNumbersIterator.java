@@ -3,7 +3,7 @@ package ru.job4j.iterator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class EvenNumbersIterator implements Iterator {
+    class EvenNumbersIterator implements Iterator {
     private final int[] array;
     int index = 0;
 
