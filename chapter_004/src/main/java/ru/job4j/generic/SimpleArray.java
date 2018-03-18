@@ -47,7 +47,7 @@ class SimpleArray<T> implements Iterable<T> {
         if (position >= index) {
             return false;
         }
-        for (int i = position; i < index; i++) {
+        for (int i = position; i < index - 1; i++) {
             objects[i] = objects[i + 1];
         }
         index--;
