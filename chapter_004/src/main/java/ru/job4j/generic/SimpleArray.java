@@ -50,6 +50,7 @@ class SimpleArray<T> implements Iterable<T> {
         for (int i = position; i < index - 1; i++) {
             objects[i] = objects[i + 1];
         }
+        objects[index - 1] = null;
         index--;
         return true;
     }
