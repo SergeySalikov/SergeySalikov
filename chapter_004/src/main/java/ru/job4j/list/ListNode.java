@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 public class ListNode<T> implements Iterable<T> {
 
     private Node<T> first;
-    public Node<T> last;
+    private Node<T> last;
     private int modCount = 0;
 
     public ListNode() {
@@ -20,14 +20,13 @@ public class ListNode<T> implements Iterable<T> {
         return new Iterator<T>() {
             Node<T> data = first.next;
             final private int counter = modCount;
-            private int index = 0;
 
             @Override
             public boolean hasNext() {
                 if (counter != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return !isEmpty() && index < modCount;
+                return data != null;
             }
 
             @Override
@@ -35,12 +34,8 @@ public class ListNode<T> implements Iterable<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                if (counter != modCount) {
-                    throw new ConcurrentModificationException();
-                }
                 T result = data.getValue();
                 data = data.next;
-                index++;
                 return result;
             }
         };
@@ -57,6 +52,24 @@ public class ListNode<T> implements Iterable<T> {
             last = newNode;
         }
         modCount++;
+    }
+
+    public void addStack(T value) {
+        Node<T> newNode = new Node<>(value);
+        newNode.next = first;
+        first = newNode;
+    }
+
+    public T deleteLast() {
+        T result = first.getValue();
+        first = first.next;
+        return result;
+    }
+
+    public T deleteFirst() {
+        T result = first.next.getValue();
+        first.next = first.next.next;
+        return result;
     }
 
     private boolean isEmpty() {
