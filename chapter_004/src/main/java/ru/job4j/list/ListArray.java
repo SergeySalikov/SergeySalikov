@@ -37,7 +37,7 @@ public class ListArray<E> implements Iterable<E> {
                 if (modCountIt != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return index != 0 && counter < index;
+                return counter < index;
             }
 
             @Override
