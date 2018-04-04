@@ -7,18 +7,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
     private int modCount = 0;
 
     public Tree(final E value) {
-        root = new Node(value);
+        root = new Node<>(value);
     }
 
     @Override
     public boolean add(E parent, E child) {
-        Node newNode = new Node(child);
+        Node<E> newNode = new Node<>(child);
         if (root == null) {
             root = newNode;
         } else {
-            Node parentNode = findBy(parent).get();
-            for (int i = 0; i < parentNode.leaves().size(); i++) {
-                if (parentNode.leaves().get(i).equals(child)) {
+            Optional<Node<E>> optional = findBy(parent);
+            if (!optional.isPresent()) {
+                return false;
+            }
+            Node<E> parentNode = optional.get();
+            for (Node<E> node : parentNode.leaves()) {
+                if (node.eqValue(child)) {
                     return false;
                 }
             }
@@ -47,7 +51,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
     }
 
     @Override
-    public Iterator iterator() {
+    public Iterator<E> iterator() {
         return new Iterator<E>() {
             int modCounterIterator = modCount;
             Queue<E> dataIterator = new LinkedList<>();
@@ -62,6 +66,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
                 if (modCounterIterator != modCount) {
                     throw new ConcurrentModificationException();
                 }
+
                 return !dataIterator.isEmpty();
             }
 
@@ -84,5 +89,22 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
         };
     }
 
+    private boolean isBinaryCheck(Node<E> currentNode, boolean flag) {
+        boolean result = flag;
+        if (currentNode.leaves().size() > 2) {
+            result = false;
+            return result;
+        }
+        if (currentNode.leaves() != null) {
+            for (Node<E> node : currentNode.leaves()) {
+                result = isBinaryCheck(node, result);
+            }
+        }
+        return result;
+    }
+
+    public boolean isBinary() {
+        return isBinaryCheck(root, true);
+    }
 
 }

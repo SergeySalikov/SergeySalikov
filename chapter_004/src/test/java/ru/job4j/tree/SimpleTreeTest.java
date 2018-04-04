@@ -17,12 +17,13 @@ public class SimpleTreeTest {
     public void setUp() {
         tree.add(10, 5);
         tree.add(10, 9);
-        tree.add(10, 3);
         tree.add(9, 2);
         tree.add(9, 31);
+        tree.add(9, 31);
         tree.add(2, 331);
+        tree.add(2, 1233);
+        tree.add(2, 3122);
         tree.add(5, 20);
-        tree.add(3, 12);
     }
 
     @Test
@@ -35,12 +36,17 @@ public class SimpleTreeTest {
             i++;
         }
         Arrays.sort(result);
-        assertThat(result, is(new Integer[]{2, 3, 5, 9, 10, 12, 20, 31, 331}));
+        assertThat(result, is(new Integer[]{2, 5, 9, 10, 20, 31, 331, 1233, 3122}));
     }
 
     @Test
     public void thenFindBy() {
         Integer result = tree.findBy(9).get().getValue();
         assertThat(result, is(9));
+    }
+
+    @Test
+    public void thenIsBinary() {
+        assertThat(tree.isBinary(), is(false));
     }
 }
