@@ -17,10 +17,12 @@ public class SimpleTreeTest {
     public void setUp() {
         tree.add(10, 5);
         tree.add(10, 9);
+        tree.add(10, 9);
         tree.add(9, 2);
         tree.add(9, 31);
         tree.add(9, 31);
         tree.add(2, 331);
+        tree.add(2, 9);
         tree.add(2, 1233);
         tree.add(2, 3122);
         tree.add(5, 20);

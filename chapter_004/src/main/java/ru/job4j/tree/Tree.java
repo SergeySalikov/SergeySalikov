@@ -12,22 +12,16 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
 
     @Override
     public boolean add(E parent, E child) {
-        Node<E> newNode = new Node<>(child);
-        if (root == null) {
-            root = newNode;
-        } else {
-            Optional<Node<E>> optional = findBy(parent);
-            if (!optional.isPresent()) {
-                return false;
-            }
-            Node<E> parentNode = optional.get();
-            for (Node<E> node : parentNode.leaves()) {
-                if (node.eqValue(child)) {
-                    return false;
-                }
-            }
-            parentNode.leaves().add(newNode);
+        if (isDouble(child)) {
+            return false;
         }
+        Node<E> newNode = new Node<>(child);
+        Optional<Node<E>> optional = findBy(parent);
+        if (!optional.isPresent()) {
+            return false;
+        }
+        Node<E> parentNode = optional.get();
+        parentNode.leaves().add(newNode);
         modCount++;
         return true;
     }
@@ -106,5 +100,15 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
     public boolean isBinary() {
         return isBinaryCheck(root, true);
     }
+
+    private boolean isDouble(E value) {
+        boolean result = false;
+        Optional<Node<E>> optional = findBy(value);
+        if (optional.isPresent()) {
+            result = true;
+        }
+        return result;
+    }
+
 
 }
