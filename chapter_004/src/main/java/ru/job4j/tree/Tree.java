@@ -102,12 +102,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E>, Iterable<E>
     }
 
     private boolean isDouble(E value) {
-        boolean result = false;
-        Optional<Node<E>> optional = findBy(value);
-        if (optional.isPresent()) {
-            result = true;
-        }
-        return result;
+        return findBy(value).isPresent();
     }
 
 
