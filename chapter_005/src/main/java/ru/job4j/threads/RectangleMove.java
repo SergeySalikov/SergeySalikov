@@ -2,17 +2,19 @@ package ru.job4j.threads;
 
 import javafx.scene.shape.Rectangle;
 
-public class RectangleMove implements Runnable {
+public class RectangleMove extends Thread {
     private final Rectangle rect;
+    private boolean happyEnd;
 
     public RectangleMove(Rectangle rect) {
         this.rect = rect;
+        happyEnd = false;
     }
 
     @Override
     public void run() {
         boolean bound = false;
-        while (true) {
+        while (!happyEnd) {
             if (rect.getX() == 300) {
                 bound = true;
             } else if (rect.getX() == 0) {
@@ -29,6 +31,11 @@ public class RectangleMove implements Runnable {
                 e.printStackTrace();
             }
         }
+        Thread.interrupted();
+    }
+
+    void hasHappyEnd() {
+        happyEnd = true;
     }
 
 }
