@@ -4,15 +4,19 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ListNode<T> implements Iterable<T> {
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
 
-    private Node<T> first;
-    private Node<T> last;
+@ThreadSafe
+public class ListNode<T> implements Iterable<T> {
+    @GuardedBy("this")
+    private volatile Node<T> first;
+    private volatile Node<T> last;
     private int modCount = 0;
 
     public ListNode() {
-        this.first = new Node<T>();
-        this.last = new Node<T>();
+        this.first = new Node<>();
+        this.last = new Node<>();
     }
 
     @Override
@@ -41,7 +45,7 @@ public class ListNode<T> implements Iterable<T> {
         };
     }
 
-    public void add(T value) {
+    public synchronized void add(T value) {
         Node<T> newNode = new Node<>(value);
         if (isEmpty()) {
             first.next = newNode;
@@ -54,19 +58,19 @@ public class ListNode<T> implements Iterable<T> {
         modCount++;
     }
 
-    public void addStack(T value) {
+    public synchronized void addStack(T value) {
         Node<T> newNode = new Node<>(value);
         newNode.next = first;
         first = newNode;
     }
 
-    public T deleteLast() {
+    public synchronized T deleteLast() {
         T result = first.getValue();
         first = first.next;
         return result;
     }
 
-    public T deleteFirst() {
+    public synchronized T deleteFirst() {
         T result = first.next.getValue();
         first.next = first.next.next;
         return result;

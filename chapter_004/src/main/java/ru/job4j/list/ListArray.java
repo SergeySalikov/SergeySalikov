@@ -5,8 +5,13 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import net.jcip.annotations.GuardedBy;
+import net.jcip.annotations.ThreadSafe;
+
+@ThreadSafe
 public class ListArray<E> implements Iterable<E> {
-    private Object[] container;
+    @GuardedBy("this")
+    private volatile Object[] container;
     private int index = 0;
     private int modCount = 0;
 
@@ -14,7 +19,7 @@ public class ListArray<E> implements Iterable<E> {
         container = new Object[3];
     }
 
-    public void add(E value) {
+    public synchronized void add(E value) {
         if (index == container.length - 1) {
             container = Arrays.copyOf(container, container.length * 2);
         }
@@ -22,7 +27,7 @@ public class ListArray<E> implements Iterable<E> {
         modCount++;
     }
 
-    public E get(int position) {
+    public synchronized E get(int position) {
         return (E) container[position];
     }
 
@@ -30,7 +35,7 @@ public class ListArray<E> implements Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<E>() {
             private int counter = 0;
-            private int modCountIt = modCount;
+            private final int modCountIt = modCount;
 
             @Override
             public boolean hasNext() {
@@ -47,7 +52,6 @@ public class ListArray<E> implements Iterable<E> {
                 }
                 return (E) container[counter++];
             }
-
         };
     }
 }
