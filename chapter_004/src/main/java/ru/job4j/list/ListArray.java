@@ -13,7 +13,7 @@ public class ListArray<E> implements Iterable<E> {
     @GuardedBy("this")
     private volatile Object[] container;
     private int index = 0;
-    private int modCount = 0;
+    private volatile int modCount = 0;
 
     public ListArray() {
         container = new Object[3];

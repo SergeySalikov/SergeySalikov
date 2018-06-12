@@ -12,7 +12,7 @@ public class ListNode<T> implements Iterable<T> {
     @GuardedBy("this")
     private volatile Node<T> first;
     private volatile Node<T> last;
-    private int modCount = 0;
+    private volatile int modCount = 0;
 
     public ListNode() {
         this.first = new Node<>();
@@ -80,7 +80,7 @@ public class ListNode<T> implements Iterable<T> {
         return first.next == null;
     }
 
-    public T get(int index) {
+    public synchronized T get(int index) {
         Node temp = first.next;
         for (int i = 1; i < index; i++) {
             temp = temp.next;
