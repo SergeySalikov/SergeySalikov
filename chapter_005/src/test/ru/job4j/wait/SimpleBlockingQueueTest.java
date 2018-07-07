@@ -18,7 +18,6 @@ public class SimpleBlockingQueueTest {
 
         @Override
         public void run() {
-
             for (int i = 0; i < 10; i++) {
                 blockingQueue.offer(i);
             }
@@ -33,7 +32,6 @@ public class SimpleBlockingQueueTest {
         Consumer(SimpleBlockingQueue<Integer> queue) {
             this.queue = queue;
         }
-
         @Override
         public void run() {
             while (counter != arr.length) {
@@ -58,5 +56,4 @@ public class SimpleBlockingQueueTest {
         String expected = "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]";
         assertThat(result, is(expected));
     }
-
 }
