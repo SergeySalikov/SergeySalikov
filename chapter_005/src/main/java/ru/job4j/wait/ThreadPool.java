@@ -3,15 +3,15 @@ package ru.job4j.wait;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ThreadPool {
 
     private final List<Thread> threads = new LinkedList<>();
-    private final Queue<Runnable> tasks = new LinkedBlockingQueue<>();
-    private boolean isShutDown = false;
+    private final BlockingQueue<Runnable> tasks = new LinkedBlockingQueue<>();
 
-    ThreadPool() {
+    public ThreadPool() {
         for (int i = 0; i < Runtime.getRuntime().availableProcessors(); i++) {
             threads.add(i, new Thread(new PoolThread()));
             threads.get(i).start();
@@ -19,16 +19,16 @@ public class ThreadPool {
     }
 
     public void work(Runnable job) {
-        if (!isShutDown) {
-            tasks.offer(job);
-        }
+        tasks.offer(job);
     }
 
     public void shutdown() {
-        isShutDown = true;
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
     }
 
-    private class PoolThread implements Runnable {
+    private class PoolThread extends Thread {
         Queue<Runnable> threadTask;
 
         PoolThread() {
@@ -37,12 +37,15 @@ public class ThreadPool {
 
         @Override
         public void run() {
-            while (!isShutDown) {
-                Runnable nextTask = tasks.poll();
-                if (nextTask != null) {
+            try {
+                while (!isInterrupted()) {
+                    Runnable nextTask = tasks.take();
                     nextTask.run();
                 }
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread() + " " + "end");
             }
         }
     }
 }
+
