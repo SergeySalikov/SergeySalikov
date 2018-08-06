@@ -8,13 +8,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class EmailNotification {
     private final BlockingQueue<User> userStore;
+    private final ExecutorService pool;
 
     public EmailNotification(LinkedBlockingQueue<User> userStore) {
         this.userStore = userStore;
+        this.pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     }
 
     public void emailTo() {
-        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         while (!userStore.isEmpty()) {
             pool.submit(new Runnable() {
                 String subject;
