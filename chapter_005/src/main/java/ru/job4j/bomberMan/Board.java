@@ -1,37 +1,37 @@
 package ru.job4j.bomberMan;
 
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Board {
-    final private Lock[][] board;
-    private int x;
-    private int y;
+class Board {
+    final private Cell[][] board;
 
-    public Board(int x, int y) {
-        this.x = x;
-        this.y = y;
-        board = new ReentrantLock[x][y];
+    Board(int x, int y) {
+        board = new Cell[y][x];
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                board[i][j] = new ReentrantLock();
+                board[i][j] = new Cell(j, i, new ReentrantLock());
             }
         }
     }
 
-    boolean move(Cell source, Cell dist) {
-        return true;
+    boolean move(Cell source, Cell dist) throws InterruptedException {
+        boolean result = dist.cellLock();
+        if (result) {
+            source.CellUnlock();
+        }
+        return result;
     }
 
-    Lock getLock(Cell cell) {
-        return board[cell.getY()][cell.getX()];
+    Cell getCell(int x, int y) {
+        return board[y][x];
     }
 
-    public int getY() {
-        return y;
+    int getX() {
+        return board[0].length - 1;
     }
 
-    public int getX() {
-        return x;
+    int getY() {
+        return board.length - 1;
     }
+
 }

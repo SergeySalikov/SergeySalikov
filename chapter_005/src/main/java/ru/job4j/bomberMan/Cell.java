@@ -1,35 +1,33 @@
 package ru.job4j.bomberMan;
 
-import java.util.Objects;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Cell {
+    private ReentrantLock lock;
     private int x;
     private int y;
 
-    Cell(int x, int y) {
+    Cell(int x, int y, ReentrantLock lock) {
         this.x = x;
         this.y = y;
+        this.lock = lock;
     }
 
-    public int getX() {
+    int getX() {
         return x;
     }
 
-    public int getY() {
+    int getY() {
         return y;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cell cell = (Cell) o;
-        return x == cell.x &&
-                y == cell.y;
+    boolean cellLock() throws InterruptedException {
+        return this.lock.tryLock(500, TimeUnit.MILLISECONDS);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y);
+    void CellUnlock() {
+        this.lock.unlock();
     }
 }
