@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Cell {
-    private ReentrantLock lock;
-    private int x;
-    private int y;
+    private final ReentrantLock lock;
+    private final int x;
+    private final int y;
 
     Cell(int x, int y, ReentrantLock lock) {
         this.x = x;
@@ -24,7 +24,7 @@ public class Cell {
     }
 
     boolean cellLock() throws InterruptedException {
-        return this.lock.tryLock(500, TimeUnit.MILLISECONDS);
+        return this.lock.tryLock(5000, TimeUnit.MILLISECONDS);
     }
 
     void CellUnlock() {
