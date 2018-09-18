@@ -1,65 +1,39 @@
 package ru.job4j.bomberMan;
 
 import java.util.Random;
-import java.util.concurrent.locks.ReentrantLock;
 
 class Board {
-    private final ReentrantLock[][] board;
-
+    private final Cell[][] board;
+    private int sizeX;
+    private int sizeY;
    public Board(int x, int y) {
-        board = new ReentrantLock[y][x];
+       sizeX = x;
+       sizeY = y;
+        board = new Cell[y][x];
         for (int i = 0; i < y; i++) {
             for (int j = 0; j < x; j++) {
-                board[i][j] = new ReentrantLock();
+                board[i][j] = new Cell(j, i);
             }
         }
     }
 
-    private boolean move(Cell source, Cell dist) throws InterruptedException {
-        boolean result = dist.cellLock();
-        if (result) {
-            source.CellUnlock();
+  public boolean checkBound(Cell dist) {
+        int x = dist.getX();
+        int y = dist.getY();
+        boolean result = false;
+        if (x > 0 && y > 0 && x < sizeX && y <sizeY) {
+            result = true;
+        }
+        return result;
+    }
+    public boolean checkBound(int x, int y) {
+        boolean result = false;
+        if (x > 0 && y > 0 && x < sizeX && y < sizeY) {
+            result = true;
         }
         return result;
     }
-
-    public void startGame(int x, int y) {
-        Thread heroThread = new Thread() {
-            Cell heroCell = new Cell(x, y, board[y][x]);
-
-            @Override
-            public void run() {
-                try {
-                    heroCell.cellLock();
-                    while (true) {
-                        Cell dist = newPosition(heroCell);
-                        if (move(heroCell, dist)) {
-                            heroCell = dist;
-                            sleep(1000);
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        heroThread.start();
-    }
-
-    private Cell newPosition(Cell source) {
-        Random random = new Random();
-        int x;
-        int y;
-        Cell result = source;
-        boolean isNewCell = false;
-        while (!isNewCell) {
-            x = source.getX() + random.nextInt(2) * (random.nextBoolean() ? 1 : -1);
-            y = source.getY() + random.nextInt(2) * (random.nextBoolean() ? 1 : -1);
-            if (x > 0 && y > 0 && x < board[1].length && y < board.length && (x != source.getX() || y != source.getY())) {
-                result = new Cell(x, y, board[y][x]);
-                isNewCell = true;
-            }
-        }
-        return result;
+    public Cell getCell(int x, int y) {
+       return board[y][x];
     }
 }

@@ -9,10 +9,10 @@ public class Cell {
     private final int x;
     private final int y;
 
-    Cell(int x, int y, ReentrantLock lock) {
+    Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.lock = lock;
+        this.lock = new ReentrantLock();
     }
 
     int getX() {
